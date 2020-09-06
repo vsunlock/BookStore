@@ -1,0 +1,42 @@
+﻿@model BookStore.Models.Books
+
+@{
+    ViewBag.Title = "BookDetails";
+}
+
+<section id="bksDetails" class="py-3">
+    <div class="container">
+        <div class="row">
+            @*<div class="col-sm-4">
+                <div class="text-center">
+                    <img src="@Model.ImagePath" class="rounded" alt="...">
+                    <h4 class="">@Model.Name</h4>
+                    <h6 class="text-muted">ISBN : @Model.ISBN</h6>
+                </div>
+                <footer class="blockquote-footer">By <cite title="Source Title">@Model.Author</cite></footer>
+                <footer class="blockquote-footer">Created On: <cite title="Source Title">@Model.CR_Date</cite></footer>
+                <footer class="blockquote-footer">Created By: <cite title="Source Title">@Model.CR_By</cite></footer>
+            </div>
+            <div class="col-sm-8">
+                <p class="mb-0">@Model.Description</p>
+            </div>*@
+            <div class="col-sm-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">@Model.Name</h4>
+                        <h6 class="text-muted">ISBN : @Model.ISBN</h6>
+                        <small class="text-muted">by @Model.Author</small>
+                        <footer class="blockquote-footer">Created On: <cite title="Source Title">@Model.CR_Date</cite></footer>
+                        <footer class="blockquote-footer">Created By: <cite title="Source Title">@Model.CR_By</cite></footer>
+                        <hr />
+                        <p class="card-text text-justify">
+                            @Model.Description
+                        </p>
+                    </div>
+                    <img src="@Model.ImagePath" alt="Books" class="img-fluid card-img-top" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

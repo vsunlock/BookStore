@@ -1,0 +1,43 @@
+﻿@model BookStore.Models.BookViewModel
+
+@{
+    string title = "Add Book";
+    string buttonName = "Add";
+    if (Model.book_id != 0)
+    {
+        title = "Edit Book" + Model.book_title;
+        buttonName = "Edit";
+    }
+
+}
+
+@using (Html.BeginForm())
+{
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">@title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        @Html.HiddenFor(x => x.book_id)
+        <div class="form-group">
+            @Html.LabelFor(x => x.book_title)
+            @Html.TextBoxFor(x => x.book_title, new { @class = "form-control", @placeholder = "Enter First Name" })
+        </div>
+        <div class="form-group">
+            @Html.Label("Author")
+            @Html.DropDownListFor(model => model.selectedAuthors,
+                                    new MultiSelectList(Model.authorList, "Value", "Text"),
+                                    new { @class= "form-control",multiple="multiple" })
+
+            @*@Html.TextBoxFor(x => x.last_name, new { @class = "form-control", @placeholder = "Enter Last Name" })*@
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">@buttonName</button>
+    </div>
+}

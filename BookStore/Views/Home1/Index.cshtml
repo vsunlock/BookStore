@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<section id="bks" class="py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card-columns">
+                    @*<div class="card">
+                            <img src="https://source.unsplash.com/random/300x200" alt="Books" class="img-fluid card-img-top" />
+                            <div class="card-body">
+                                <h4 class="card-title">Bolg post one</h4>
+                                <small class="text-muted">by jeff</small>
+                                <hr />
+                                <p class="card-text">
+                                    lorem30
+                                </p>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .card-columns {
+        /*column-count: 4;*/
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+    // Send an AJAX request
+    $.getJSON('@Url.Action("books", "api")')
+        .done(function (data) {
+            //debugger;
+            // On success, 'data' contains a list of products.
+            var cardString = '';
+            $.each(data, function (key, item) {
+                // Add a list item for the product.
+                cardString = cardString + '<div class="card " onclick="getBookDetails(' + item.Id + ')">' +
+                    '<img src = "' + item.ImagePath + '" alt = "Books" class="img-fluid card-img-top" /> ' +
+                    '<div class="card-body">' +
+                    '<h4 class="card-title text-truncate">' + item.Name + '</h4>' +
+                    '<small class="text-muted">by ' + item.Author + '</small>' +
+                    '<hr/>' +
+                    '<p class="card-text text-truncate">' + item.Description+'</p></div></div>';
+                //$('<li>', { text: item.Name }).appendTo($('.card'));
+            });
+            $(".card-columns").html(cardString);
+            });
+    });
+     function getBookDetails(id) {
+         debugger;
+         
+         var url = '@Url.Action("BookDetails", "home")' + '/' + id;
+         window.location = url;
+        // $.get(url)
+        //.done(function (data) {
+        //   debugger;
+        //    // On success, 'data' contains a list of products.
+
+        //    });
+        }
+</script>

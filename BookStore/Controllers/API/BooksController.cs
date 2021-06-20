@@ -10,6 +10,11 @@ namespace BookStore.Controllers
 {
     public class BooksController : ApiController
     {
+        BookStoreContext db;
+        public BooksController()
+        {
+            db = new BookStoreContext();
+        }
         readonly List<Books> books = new List<Books> {
             new Books { Id=1,CR_Date=DateTime.Now,CR_By="Book Store Owner",Name="Once upon a time in Nagpur",ISBN="2316541234545",Author="Jeff Hans",Description="First of all, create MVC controller class called StudentController in the Controllers folder as shown below. Right click on the Controllers folder > Add.. > select Controller.. Step 2: We need to access Web API in the Index() action method using HttpClient as shown below.",ImagePath="/Content/Images/book1.jpg",},
             new Books { Id=2,CR_Date=DateTime.Now,CR_By="Book Store Owner",Name="Catch me if you can",ISBN="2316541000001",Author="Rough Ren",Description="First of all, create MVC controller class called StudentController in the Controllers folder as shown below. Right click on the Controllers folder > Add.. > select Controller.. Step 2: We need to access Web API in the Index() action method using HttpClient as shown below.",ImagePath="/Content/Images/book2.jpg",},
@@ -43,6 +48,36 @@ namespace BookStore.Controllers
                 return Ok(books);
             else
                 return BadRequest("Book not found!");
+        }
+
+        //[HttpPost]
+        public IHttpActionResult AddEditAuthor(Author author)
+        {
+            try
+            {
+                db.Authors.Add(author);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok();
+        }
+
+        public IHttpActionResult DeleteAuthor(int id)
+        {
+            try
+            {
+                var author = db.Authors.Find(id);
+                db.Authors.Remove(author);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok();
         }
     }
 }

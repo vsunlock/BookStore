@@ -120,11 +120,13 @@
     <Content Include="Content\Images\book6.jfif" />
     <Content Include="Content\Images\book7.jfif" />
     <Content Include="Content\Images\book8.jfif" />
+    <Content Include="Content\Images\BooksIndex.jpg" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Compile Include="Models\AuthorBook.cs" />
     <Compile Include="Models\BookViewModel.cs" />
+    <Content Include="Scripts\bkStore.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

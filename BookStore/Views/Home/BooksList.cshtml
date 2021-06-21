@@ -5,81 +5,89 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>BooksList</h2>
+<div class="container" id="indexPage">
+    <div class="well">
+        <h2>BooksList</h2>
 
-<p>
-    <button type="button" class="btn btn-primary" id="AddBook">Create New</button>
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.book_id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.book_title)
-        </th>
-        <th>Author Name</th>
-        <th>Action</th>
-    </tr>
-    @{
-        if (Model.Count() > 0)
-        {
-            foreach (var item in Model)
-            {
-                string authorName = "No Author fot this Book.";
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.book_id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.book_title)
-                    </td>
-                    <td>
-                        @if (item.Authors.Count() > 0) {
-                            authorName = "";
-                            foreach (var authors in item.Authors)
-                            {
-                                authorName += authors.Author.first_name + " " + authors.Author.last_name + ",";
-                            }
-                        }
-                       
-                        @authorName.TrimEnd(',')
-                    </td>
-                    <td>
-                        <a href="#" onclick="EditBook('@Url.Action("AddEditBook",routeValues:new { Id=item.book_id })')">
-                            <i class="glyphicon glyphicon-edit"></i>
-                        </a>
-
-                        <a href="#" onclick="EditBook('@Url.Action("AddEditBook",routeValues:new { Id=item.book_id })')">
-                            <i class="glyphicon glyphicon-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-            }
-        }
-        else
-        {
+        <p>
+            <button type="button" class="btn btn-primary" id="AddBook">Create New</button>
+        </p>
+        <table class="table">
             <tr>
-                <td colspan="3" class="text-center text-danger">
-                    No Record Found ...
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.book_id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.book_title)
+                </th>
+                <th>Author Name</th>
+                <th>Action</th>
             </tr>
-        }
+            @{
+                if (Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        string authorName = "No Author fot this Book.";
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.book_id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.book_title)
+                            </td>
+                            <td>
+                                @if (item.Authors.Count() > 0)
+                                {
+                                    authorName = "";
+                                    foreach (var authors in item.Authors)
+                                    {
+                                        authorName += authors.Author.first_name + " " + authors.Author.last_name + ",";
+                                    }
+                                }
 
-    }
+                                @authorName.TrimEnd(',')
+                            </td>
+                            <td>
+                                <a href="#" onclick="EditBook('@Url.Action("AddEditBook",routeValues:new { Id=item.book_id })')">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </a>
 
-</table>
+                                <a href="#" onclick="EditBook('@Url.Action("AddEditBook",routeValues:new { Id=item.book_id })')">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="text-center text-danger">
+                            No Record Found ...
+                        </td>
+                    </tr>
+                }
 
-<!-- Modal -->
-<div class="modal fade" id="addEditBookModal" data-url='@Url.Action("AddEditBook",routeValues:new { Id=0})'
-     tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" id="addEditBookContent">
+            }
+
+        </table>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addEditBookModal" data-url='@Url.Action("AddEditBook",routeValues:new { Id=0})'
+             tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" id="addEditBookContent">
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        WindowResize();
+    });
     $('#AddBook').click(function () {
         var url = $('#addEditBookModal').data('url');
 

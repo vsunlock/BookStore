@@ -5,74 +5,82 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>AuthorList</h2>
+<div class="container" id="indexPage">
+    <div class="well">
+        <h2>AuthorList</h2>
 
-<p>
-    <button type="button" class="btn btn-primary" id="AddAuthor" >Create New</button>
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.first_name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.last_name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.date_of_birth)
-        </th>
-        <th>Action</th>
-    </tr>
-
-    @{
-        if (Model.Count() > 0)
-        {
-            foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.first_name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.last_name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.date_of_birth)
-                    </td>
-                    <td>
-                        <a href="#" onclick="EditAuthor('@Url.Action("AddEditAuthor",routeValues:new { Id=item.author_id })')">
-                            <i class="glyphicon glyphicon-edit"></i>
-                        </a>
-                        
-                        <a href="#" onclick="EditAuthor('@Url.Action("AddEditAuthor",routeValues:new { Id=item.author_id })')">
-                            <i class="glyphicon glyphicon-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-            }
-        }
-        else
-        {
+        <p>
+            <button type="button" class="btn btn-primary" id="AddAuthor">Create New</button>
+        </p>
+        <table class="table">
             <tr>
-                <td colspan="4" class="text-center text-danger">
-                    No Record found ...
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.first_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.last_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.date_of_birth)
+                </th>
+                <th>Action</th>
             </tr>
-        }
-    }
 
-</table>
+            @{
+                if (Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.first_name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.last_name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.date_of_birth)
+                            </td>
+                            <td>
+                                <a href="#" onclick="EditAuthor('@Url.Action("AddEditAuthor",routeValues:new { Id=item.author_id })')">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </a>
 
-<!-- Modal -->
-<div class="modal fade" id="addEditAuthorModal" data-url='@Url.Action("AddEditAuthor",routeValues:new { Id=0})'
-     tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" id="addEditAuthorContent">
+                                <a href="#" onclick="EditAuthor('@Url.Action("AddEditAuthor",routeValues:new { Id=item.author_id })')">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-danger">
+                            No Record found ...
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addEditAuthorModal" data-url='@Url.Action("AddEditAuthor",routeValues:new { Id=0})'
+             tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" id="addEditAuthorContent">
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        WindowResize();
+    });
+
     $('#AddAuthor').click(function () {
         var url = $('#addEditAuthorModal').data('url');
 

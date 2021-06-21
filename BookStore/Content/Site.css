@@ -21,3 +21,12 @@ textarea {
     opacity:0.5;
     cursor:pointer;
 }
+
+.navbar-custom{
+    border-radius:0px;
+    margin-bottom:0px;
+}
+
+.mainPage {
+    background: url('/Content/Images/BooksIndex.jpg')
+}

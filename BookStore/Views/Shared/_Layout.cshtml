@@ -11,7 +11,8 @@
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
 </head>
 <body>
-    <div class="navbar navbar-inverse">
+    <div class="navbar navbar-inverse navbar-custom " style=" border-radius: 0px;margin-bottom: 0px;
+" id="header">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -23,6 +24,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav pull-right">
+                    <li class="nav-item active">
+                        @Html.ActionLink("Home", "Index", "Home", new { @class = "nav-link" })
+                    </li>
                     <li class="nav-item active">
                         @Html.ActionLink("Book", "BooksList", "Home", new { @class = "nav-link" })
                     </li>
@@ -61,18 +65,31 @@
             </div>
         </nav>*@
 
-    <div class="container body-content" style="padding-top:10px">
+    <div class="container-fluid body-content mainPage">
         @RenderBody()
 
     </div>
-    <hr />
-    <div class="container-fluid">
-        <footer class="" style="padding-left:20px">
-            <p>&copy; @DateTime.Now.Year - Book Store</p>
-        </footer>
+    <div class="container-fluid" id="footer">
+        <div class="container">
+            <footer>
+                <p style="margin-bottom:0px">&copy; @DateTime.Now.Year - Book Store</p>
+            </footer>
+        </div>
     </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var widHt = $(window).height();
+            var headerHt = $("#header").height();
+            var footerHt = $("#footer").height();
+
+            $("#indexPage").height(widHt - headerHt - footerHt - 10);
+        });
+    </script>
 
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bkStore.js"></script>
 </body>
 </html>

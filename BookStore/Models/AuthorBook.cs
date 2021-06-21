@@ -7,16 +7,15 @@ using System.Web;
 
 namespace BookStore.Models
 {
-    public class Book
+    public class AuthorBook
     {
-        [Key]
-        [Display(Name ="Book Id")]
+        [Key, Column(Order = 1)]
+        public int author_id { get; set; }
+        [Key, Column(Order = 2)]
         public int book_id { get; set; }
 
-        [Display(Name = "Book Title")]
-        public string book_title { get; set; }
-
-        public ICollection<AuthorBook> Authors{ get; set; }
+        public Author Author { get; set; }
+        public Book Book { get; set; }
         
     }
 }

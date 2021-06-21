@@ -1,10 +1,12 @@
 ﻿using BookStore.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Script.Serialization;
 
 namespace BookStore.Controllers
 {
@@ -23,6 +25,7 @@ namespace BookStore.Controllers
             new Books { Id=5,CR_Date=DateTime.Now,CR_By="Book Store Owner",Name="Meluha",ISBN="2316541000004",Author="Neha Wele",Description="First of all, create MVC controller class called StudentController in the Controllers folder as shown below. Right click on the Controllers folder > Add.. > select Controller.. Step 2: We need to access Web API in the Index() action method using HttpClient as shown below.",ImagePath="/Content/Images/book1.jpg",}
         };
 
+        #region OLD CODE
         public IEnumerable<Books> BooksList()
         {
             return books;
@@ -79,5 +82,35 @@ namespace BookStore.Controllers
             }
             return Ok();
         }
+        #endregion
+
+        [HttpGet]
+        [Route("api/Author/{ID:int}")]
+        public IHttpActionResult Author(int id)
+        {
+            try
+            {
+                var author = (from ab in db.Authors.Where(x=>x.author_id==id)
+                              select new
+                              {
+                                  author_id=ab.author_id,
+                                  first_name=ab.first_name,
+                                  last_name=ab.last_name,
+                                  date_of_birth=ab.date_of_birth,
+                                  books= (from abb in db.AuthorBooks.Where(x => x.author_id == id)
+                                          from b in db.Books.Where(x => x.book_id == abb.book_id)
+                                          select b
+                             ).ToList()
+                              }
+                              ).FirstOrDefault();
+                
+                return Ok(author);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

@@ -18,13 +18,15 @@
         <th>
             @Html.DisplayNameFor(model => model.book_title)
         </th>
-        <th></th>
+        <th>Author Name</th>
+        <th>Action</th>
     </tr>
     @{
         if (Model.Count() > 0)
         {
             foreach (var item in Model)
             {
+                string authorName = "No Author fot this Book.";
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.book_id)
@@ -33,11 +35,22 @@
                         @Html.DisplayFor(modelItem => item.book_title)
                     </td>
                     <td>
-                        <a href="#" onclick="EditAuthor('@Url.Action("AddEditAuthor",routeValues:new { Id=item.book_id })')">
+                        @if (item.Authors.Count() > 0) {
+                            authorName = "";
+                            foreach (var authors in item.Authors)
+                            {
+                                authorName += authors.Author.first_name + " " + authors.Author.last_name + ",";
+                            }
+                        }
+                       
+                        @authorName.TrimEnd(',')
+                    </td>
+                    <td>
+                        <a href="#" onclick="EditBook('@Url.Action("AddEditBook",routeValues:new { Id=item.book_id })')">
                             <i class="glyphicon glyphicon-edit"></i>
                         </a>
 
-                        <a href="#" onclick="EditAuthor('@Url.Action("AddEditAuthor",routeValues:new { Id=item.book_id })')">
+                        <a href="#" onclick="EditBook('@Url.Action("AddEditBook",routeValues:new { Id=item.book_id })')">
                             <i class="glyphicon glyphicon-trash"></i>
                         </a>
                     </td>

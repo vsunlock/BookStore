@@ -26,7 +26,7 @@ namespace BookStore.Controllers
         #region BOOK
         public ActionResult BooksList()
         {
-            var bookList = db.Books.ToList();
+            var bookList = db.Books.Include("Authors.Author").ToList();
             return View(bookList);
         }
 
@@ -37,26 +37,36 @@ namespace BookStore.Controllers
             viewModel.selectedAuthors = new List<int>();
             var listAuthor = db.Authors.ToList();
 
-            foreach(var item in listAuthor)
+            foreach (var item in listAuthor)
             {
                 SelectListItem listItem = new SelectListItem();
                 listItem.Value = item.author_id.ToString();
                 listItem.Text = item.first_name + " " + item.last_name;
-
                 viewModel.authorList.Add(listItem);
             }
 
             if (Id > 0)
-            { 
-                var book = db.Books.Where(x => x.book_id == Id).FirstOrDefault();
+            {
+                var test = db.AuthorBooks.Where(x => x.book_id == Id);
+                var book = db.Books.Include("Authors").Where(x=>x.book_id==Id).SingleOrDefault();
+
                 viewModel.book_id = book.book_id;
                 viewModel.book_title = book.book_title;
-                viewModel.book_id = book.book_id;
-
+              
                 foreach (var item in book.Authors)
                 {
                     viewModel.selectedAuthors.Add(item.author_id);
                 }
+            }
+            else
+            {
+                //foreach (var item in listAuthor)
+                //{
+                //    SelectListItem listItem = new SelectListItem();
+                //    listItem.Value = item.author_id.ToString();
+                //    listItem.Text = item.first_name + " " + item.last_name;
+                //    viewModel.authorList.Add(listItem);
+                //}
             }
 
             return PartialView("_AddEditBook", viewModel);
@@ -67,19 +77,57 @@ namespace BookStore.Controllers
         {
             try
             {
-                Book book = new Book();
-                book.book_id = bookView.book_id;
-                book.book_title = bookView.book_title;
-                book.Authors = new List<Author>();
-
-                foreach(var authorId in bookView.selectedAuthors)
+                if (bookView.book_id == 0)
                 {
-                    var author = db.Authors.Where(x => x.author_id == authorId).FirstOrDefault();
-                    book.Authors.Add(author);
-                }
+                    Book book = new Book();
+                    book.book_id = bookView.book_id;
+                    book.book_title = bookView.book_title;
+                    //var selectedAuthors = new AuthorBook();
+                    db.Books.Add(book);
+                    db.SaveChanges();
 
-                db.Books.Add(book);
-                db.SaveChanges();
+                    foreach (var authorId in bookView.selectedAuthors)
+                    {
+                        AuthorBook auth = new AuthorBook();
+
+                        auth.author_id = authorId;
+                        auth.book_id = book.book_id;
+                        db.AuthorBooks.Add(auth);
+                    }
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var bookEdit = db.Books.Where(x => x.book_id == bookView.book_id).FirstOrDefault();
+                    bookEdit.book_title = bookView.book_title;
+
+                    db.Books.Add(bookEdit);
+                    db.Entry(bookEdit).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+
+
+                    var removeBook = db.AuthorBooks.Where(x => x.book_id == bookView.book_id).ToList();
+                    if (removeBook.Count()>0)
+                    {
+                        foreach (var item in removeBook)
+                        {
+                            db.AuthorBooks.Remove(item);
+                        }
+                        db.SaveChanges();
+                    }                    
+
+                    foreach (var authorId in bookView.selectedAuthors)
+                    {
+                        AuthorBook auth = new AuthorBook();
+
+                        auth.author_id = authorId;
+                        auth.book_id = bookView.book_id;
+                        db.AuthorBooks.Add(auth);
+                    }
+                    //db.Entry(bookEdit).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+                
             }
             catch (Exception ex)
             {
@@ -123,8 +171,22 @@ namespace BookStore.Controllers
         {
             try
             {
-                db.Authors.Add(author);
-                db.SaveChanges();
+                if (author.author_id == 0)
+                {
+                    db.Authors.Add(author);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var authorEdit = db.Authors.Where(x => x.author_id == author.author_id).FirstOrDefault();
+                    authorEdit.first_name = author.first_name;
+                    authorEdit.last_name = author.last_name;
+                    authorEdit.date_of_birth = author.date_of_birth;
+
+                    db.Authors.Add(authorEdit);
+                    db.Entry(authorEdit).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
             catch (Exception ex)
             {

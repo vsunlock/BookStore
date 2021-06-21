@@ -15,7 +15,10 @@ namespace BookStore.Models
 		[Display(Name = "Book Title")]
 		public string book_title { get; set; }
 
-		public List<int>selectedAuthors { get; set; }
+        public List<int>selectedAuthors { get; set; }
+        //public List<int>selectedEditAuthors { get; set; }
         public List<SelectListItem> authorList { get; set; }
+
+
     }
 }

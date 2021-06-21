@@ -8,6 +8,7 @@ namespace BookStore.Models
 {
     public class Author
     {
+
         [Key]
         [Display(Name = "Author Id")]
         public int author_id { get; set; }
@@ -21,6 +22,6 @@ namespace BookStore.Models
         [Display(Name = "Date of Birth")]
         public DateTime date_of_birth { get; set; }
 
-        public ICollection<Book> Books { get; set; }
+        public ICollection<AuthorBook> Books { get; set; }
     }
 }
